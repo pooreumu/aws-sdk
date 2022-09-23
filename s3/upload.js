@@ -1,13 +1,9 @@
 require("dotenv").config();
 const fs = require("fs");
 const AWS = require("aws-sdk");
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-const s3 = new AWS.S3({ accessKeyId, secretAccessKey });
+const s3 = new AWS.S3({ region: process.env.AWS_REGION });
 
-const uploadFile = (fileName) => {
-    const bucket = "버켓이름";
-    const key = "객체이름";
+const uploadFile = ({ bucket, key, fileName }) => {
     const fileContent = fs.readFileSync(fileName);
     const params = {
         Bucket: bucket,
@@ -19,4 +15,8 @@ const uploadFile = (fileName) => {
         console.log(`성공 ${data.Location}`);
     });
 };
-uploadFile("./anyfile.json");
+uploadFile({
+    bucket: "버켓이름",
+    key: "객체이름",
+    fileName: "./test1.json",
+});
